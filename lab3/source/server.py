@@ -29,7 +29,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                 string_to_operate = query_params.get('str', None)[0]
                 output_string =  '{"lowercase" : 1, "uppercase" : 4, "digits" : 2, "special" : 8}'
                 x = json.loads(output_string)
-                self.wfile.write(str.encode(x))
+                self.wfile.write(output_string.encode('utf-8'))
                 
 
         
