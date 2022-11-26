@@ -6,6 +6,8 @@ import os
 import time
 from datetime import datetime, timedelta
 from urllib.parse import urlparse, parse_qs
+import json
+
 
 
 #print('source code for "http.server":', http.server.__file__)
@@ -23,9 +25,12 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()            
-            if query_params.get('str', None) == ['stringas']:
+            if query_params.get('str', None):
                 string_to_operate = query_params.get('str', None)[0]
-                self.wfile.write(str.encode(string_to_operate))
+                output_string =  '{"lowercase" : 1, "uppercase" : 4, "digits" : 2, "special" : 8}'
+                x = json.loads(output_string)
+                self.wfile.write(str.encode(x))
+                
 
         
         else:
