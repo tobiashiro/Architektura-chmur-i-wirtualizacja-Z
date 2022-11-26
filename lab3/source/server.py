@@ -6,7 +6,7 @@ import os
 import time
 from datetime import datetime, timedelta
 from urllib.parse import urlparse, parse_qs
-import json
+import re
 
 
 
@@ -27,9 +27,18 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.end_headers()            
             if query_params.get('str', None):
                 string_to_operate = query_params.get('str', None)[0]
-                output_string =  '{"lowercase" : 1, "uppercase" : 4, "digits" : 2, "special" : 8}'
-                x = json.loads(output_string)
-                self.wfile.write(output_string.encode('utf-8'))
+                output_param = {'lowercase': 0, 'uppercase': 0, 'digits': 0, 'special': 0}
+                regex = re.compile(r"[@_!#$%^&*()<>?/\|}{~:]")
+                for sign in string_to_operate:
+                    if sign.islower():
+                        output_param['lowercase'] += 1
+                    elif sign.isupper():
+                        output_param['uppercase'] += 1
+                    elif sign.isdigit():
+                        output_param['digits'] += 1
+                    elif regex.search(sign):
+                        output_param['special'] += 1
+                self.wfile.write(str(output_param).encode('utf-8'))
                 
 
         
